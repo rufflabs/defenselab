@@ -1,0 +1,9 @@
+---
+network:
+  version: 2
+  renderer: networkd
+  ethernets:
+    eth1:
+      nameservers:
+        addresses: [172.25.30.2]
+        search: [defense.local, local]
