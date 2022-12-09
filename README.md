@@ -7,6 +7,9 @@
     - Install-WazuhAgent.ps1
 - Confirm DNS works, have CSV to import DNS?
 
+- New IP range: 192.168.62.x 
+- Subnet: 255.255.248.0 | /21
+- Gateway: 192.168.56.1
 
 #### DC01
 - Re-IP to Virtualbox safe IP
