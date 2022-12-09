@@ -1,1 +1,0 @@
-C:\Vagrant\group-policy-backup\External\Import_GPOs.ps1 -Domain defense.local -BackupFolder "C:\Vagrant\GPOBackup" -SomInfo -WmiFilter

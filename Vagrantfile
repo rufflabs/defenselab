@@ -24,14 +24,14 @@ Vagrant.configure("2") do |config|
     end
 
     box.vm.provision "shell", path: "scripts/Install-DscRequirements.ps1", name: "Install DSC Requirements"
-    box.vm.provision "shell", path: "scripts/DSC_Create-Domain.ps1", name: "Create Domain via DSC"
+    box.vm.provision "shell", path: "scripts/DSC/DSC_Create-Domain.ps1", name: "Create Domain via DSC"
     box.vm.provision "shell", reboot: true, name: "Reboot after Domain creation"
-    box.vm.provision "shell", path: "scripts/DC01-AdditionalConfiguration.ps1", name: "Additional DC01 configuration"
-    box.vm.provision "shell", path: "scripts/New-DefenseNetADUsersAndGroups.ps1", name: "Populating Active Directory"
+    box.vm.provision "shell", path: "scripts/DC01/SetDefenseAdministratorPassword", name: "Update DEFENSE\\Administrator password"
+    box.vm.provision "shell", path: "scripts/DC01/CreateFileShares.ps1", name: "Create file shares"
+    box.vm.provision "shell", path: "scripts/DC01/SetPasswordPolicy.ps1", name: "Updating Domain Password Policy"
+    box.vm.provision "shell", path: "scripts/AD/New-DefenseNetADUsersAndGroups.ps1", name: "Populating Active Directory with accounts"
     #box.vm.provision "shell", reboot: true, name: "Reboot"
-    box.vm.provision "shell", path: "scripts/Install-WazuhAgent.ps1", name: "Install Wazuh Agent"
-
-
+    box.vm.provision "shell", path: "scripts/Windows/Install-WazuhAgent.ps1", name: "Install Wazuh Agent"
   end
 
   config.vm.define "soc01" do |box|
@@ -47,10 +47,10 @@ Vagrant.configure("2") do |config|
       vb.cpus = 2
     end
 
-    box.vm.provision "shell", path: "scripts/adduser.sh", name: "Create administrator user"
-    box.vm.provision "shell", inline: "sudo cp /vagrant/scripts/60-defense-net-dns.yaml /etc/netplan/", name: "Create Netplan DNS configuration"
+    box.vm.provision "shell", path: "scripts/Linux/adduser.sh", name: "Create administrator user"
+    box.vm.provision "shell", inline: "sudo cp /vagrant/scripts/linux/60-defense-net-dns.yaml /etc/netplan/", name: "Create Netplan DNS configuration"
     box.vm.provision "shell", inline: "sudo netplan apply", name: "Applying Netplan changes"
-    box.vm.provision "shell", path: "scripts/wazuh.sh", name: "Install Wazuh"
+    box.vm.provision "shell", path: "scripts/Linux/wazuh.sh", name: "Install Wazuh"
   end
 
   config.vm.define "sql01" do |box|
@@ -69,11 +69,11 @@ Vagrant.configure("2") do |config|
       vb.cpus = 2
     end
 
-    box.vm.provision "shell", path: "scripts/Install-DscRequirements.ps1", name: "Install DSC Requirements"
-    box.vm.provision "shell", path: "scripts/Set-DnsServer.ps1", name: "Set DNS Server"
-    box.vm.provision "shell", path: "scripts/DSC_Join-Domain.ps1", name: "Join Domain"
+    box.vm.provision "shell", path: "scripts/Windows/Install-DscRequirements.ps1", name: "Install DSC Requirements"
+    box.vm.provision "shell", path: "scripts/Windows/Set-DnsServer.ps1", name: "Set DNS Server"
+    box.vm.provision "shell", path: "scripts/DSC/DSC_Join-Domain.ps1", name: "Join Domain"
     box.vm.provision "shell", reboot: true
-    box.vm.provision "shell", path: "scripts/Install-WazuhAgent.ps1", name: "Install Wazuh Agent"
+    box.vm.provision "shell", path: "scripts/Windows/Install-WazuhAgent.ps1", name: "Install Wazuh Agent"
     box.vm.provision "shell", path: "scripts/DSC_Install-SqlServer.ps1", name: "Install SQL Server via DSC"
     box.vm.provision "shell", inline: "net localgroup Administrators defense\\sql.admin /ADD ", name: "Add local administrator user"
 
@@ -92,11 +92,11 @@ Vagrant.configure("2") do |config|
       vb.cpus = 2
     end
 
-    box.vm.provision "shell", path: "scripts/Install-DscRequirements.ps1", name: "Install DSC Requirements"
-    box.vm.provision "shell", path: "scripts/Set-DnsServer.ps1", name: "Set DNS Server"
-    box.vm.provision "shell", path: "scripts/DSC_Join-Domain.ps1", name: "Join Domain"
+    box.vm.provision "shell", path: "scripts/Windows/Install-DscRequirements.ps1", name: "Install DSC Requirements"
+    box.vm.provision "shell", path: "scripts/Windows/Set-DnsServer.ps1", name: "Set DNS Server"
+    box.vm.provision "shell", path: "scripts/DSC/DSC_Join-Domain.ps1", name: "Join Domain"
     box.vm.provision "shell", reboot: true
-    box.vm.provision "shell", path: "scripts/Install-WazuhAgent.ps1", name: "Install Wazuh Agent"
+    box.vm.provision "shell", path: "scripts/Windows/Install-WazuhAgent.ps1", name: "Install Wazuh Agent"
     #box.vm.provision "shell", path: "scripts/DEV01-AdditionalConfiguration.ps1", name: "Additional DEV01 Configuration"
     # TODO: Create above script, move below installs and configs to that script.
     box.vm.provision "shell", inline: "cmd.exe /c msiexec.exe /i c:\\vagrant\\programs\\amazon-corretto-17.0.5.8.1-windows-x64.msi /qn", name: "Install Amazon Corretto"
@@ -124,7 +124,7 @@ Vagrant.configure("2") do |config|
       vb.cpus = 2
     end
 
-    box.vm.provision "shell", inline: "sudo cp /vagrant/scripts/60-defense-net-dns.yaml /etc/netplan/", name: "Create Netplan DNS configuration"
+    box.vm.provision "shell", inline: "sudo cp /vagrant/scripts/Linux/60-defense-net-dns.yaml /etc/netplan/", name: "Create Netplan DNS configuration"
     box.vm.provision "shell", inline: "sudo netplan apply", name: "Applying Netplan changes"
     #box.vm.provision "shell", path: "scripts/join-domain.sh", name: "Join domain"
     #box.vm.provision "shell", path: "scripts/wazuh.sh", name: "Install Wazuh" TODO: Switch this to wazuh agent
@@ -153,7 +153,7 @@ Vagrant.configure("2") do |config|
       vb.cpus = 2
     end
 
-    box.vm.provision "shell", inline: "sudo cp /vagrant/scripts/60-defense-net-dns.yaml /etc/netplan/", name: "Create Netplan DNS configuration"
+    box.vm.provision "shell", inline: "sudo cp /vagrant/scripts/Linux/60-defense-net-dns.yaml /etc/netplan/", name: "Create Netplan DNS configuration"
     box.vm.provision "shell", inline: "sudo netplan apply", name: "Applying Netplan changes"
     #box.vm.provision "shell", path: "scripts/join-domain.sh", name: "Join domain"
     box.vm.provision "shell", inline: <<-SHELL
@@ -177,36 +177,17 @@ Vagrant.configure("2") do |config|
       vb.cpus = 2
     end
 
-    box.vm.provision "shell", path: "scripts/Install-DscRequirements.ps1", name: "Install DSC Requirements"
-    box.vm.provision "shell", path: "scripts/Set-DnsServer.ps1", name: "Set DNS Server"
-    box.vm.provision "shell", path: "scripts/DSC_Join-Domain.ps1", name: "Join Domain"
+    box.vm.provision "shell", path: "scripts/Windows/Install-DscRequirements.ps1", name: "Install DSC Requirements"
+    box.vm.provision "shell", path: "scripts/Windows/Set-DnsServer.ps1", name: "Set DNS Server"
+    box.vm.provision "shell", path: "scripts/DSC/DSC_Join-Domain.ps1", name: "Join Domain"
     box.vm.provision "shell", reboot: true, name: "Reboot after domain join"
-    box.vm.provision "shell", path: "scripts/Install-WazuhAgent.ps1", name: "Install Wazuh Agent"
+    box.vm.provision "shell", path: "scripts/Windows/Install-WazuhAgent.ps1", name: "Install Wazuh Agent"
     box.vm.provision "shell", inline: "cmd.exe /c start \"\" /w C:\\Vagrant\\Programs\\SSMS\\SSMS-Setup-ENU.exe /Quiet SSMSInstallRoot=\"C:\\Program Files (x86)\\Microsoft SQL Server Management Studio 18\"", name: "Installing SQL Server Management Studio"
     box.vm.provision "shell", inline: "Get-WindowsFeature -Name RSAT* | Install-WindowsFeature", name: "Install RSAT"
     box.vm.provision "shell", reboot: true, name: "Reboot after software installs"
  
  
   end
-
-  # config.vm.define "analyst02" do |box|
-  #   box.vm.box = basebox_windows_11
-  #   box.vm.hostname = "analyst02"
-
-  #   box.vm.network :private_network, ip: "172.25.30.200", netmask: "255.255.255.0", gateway: "172.25.30.1"
-
-  #   box.vm.provider :virtualbox do |vb|
-  #     vb.name = "defense_analyst02"
-  #     vb.memory = 4096
-  #     vb.cpus = 4
-  #   end
-
-  #   box.vm.provision "shell", path: "scripts/Install-DscRequirements.ps1", name: "Install DSC Requirements"
-  #   box.vm.provision "shell", path: "scripts/Set-DnsServer.ps1", name: "Set DNS Server"
-  #   box.vm.provision "shell", path: "scripts/DSC_Join-Domain.ps1", name: "Join Domain"
-  #   box.vm.provision "shell", reboot: true
-  #   box.vm.provision "shell", path: "scripts/Install-WazuhAgent.ps1", name: "Install Wazuh Agent"
-  # end
-
+  
   # TODO: kali/pentest/audit box
 end

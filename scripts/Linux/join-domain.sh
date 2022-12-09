@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# Currently a work in progress
+
 # Prevent apt from questioning on service restarts
 export DEBIAN_FRONTEND=noninteractive
 
