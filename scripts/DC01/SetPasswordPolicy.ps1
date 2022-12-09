@@ -1,12 +1,7 @@
-<#
-Updates Group Policy password policy locally, to allow weak passwords.
+<# 
+Sets the default domain policy
 #>
 
-Write-Host "Installing GroupPolicy AD Module"
-Install-WindowsFeature -Name GPMC
+Import-Module ActiveDirectory
 
-Write-Host "Adjusting Password Policy"
-secedit /export /cfg c:\secpol.cfg
-(Get-Content C:\secpol.cfg).replace("PasswordComplexity = 1", "PasswordComplexity = 0") | Out-File C:\secpol.cfg
-secedit /configure /db c:\windows\security\local.sdb /cfg c:\secpol.cfg /areas SECURITYPOLICY
-Remove-Item -force c:\secpol.cfg -confirm:$false
+Set-ADDefaultDomainPasswordPolicy -Identity (Get-ADDomain) -ComplexityEnabled $false -MinPasswordLength 4

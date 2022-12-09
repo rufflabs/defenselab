@@ -72,10 +72,9 @@ Vagrant.configure("2") do |config|
     box.vm.provision "shell", path: "scripts/dsc/DSC_Create-Domain.ps1", name: "Create Domain via DSC"
     box.vm.provision "shell", reboot: true, name: "Reboot after Domain creation"
     box.vm.provision "shell", path: "scripts/dc01/SetDefenseAdministratorPassword.ps1", name: "Update DEFENSE\\Administrator password"
-    box.vm.provision "shell", path: "scripts/dc01/CreateFileShares.ps1", name: "Create file shares"
     box.vm.provision "shell", path: "scripts/dc01/SetPasswordPolicy.ps1", name: "Updating Domain Password Policy"
-    box.vm.provision "shell", reboot: true, name: "Reboot after updating Password Policy"
-    box.vm.provision "shell", path: "scripts/ad/New-DefenseNetADUsersAndGroups.ps1", name: "Populating Active Directory with accounts"
+    box.vm.provision "shell", path: "scripts/dc01/New-DefenseNetADUsersAndGroups.ps1", name: "Populating Active Directory with accounts"
+    box.vm.provision "shell", path: "scripts/dc01/CreateFileShares.ps1", name: "Create file shares"
     box.vm.provision "shell", path: "scripts/windows/Install-WazuhAgent.ps1", name: "Install Wazuh Agent"
   end
 
