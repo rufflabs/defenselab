@@ -1,4 +1,4 @@
-ShareName,Path,SharePermissions,NTFSPermissions
-Finance,C:\Finance,Everyone:RW,Executive Management:RWX|Finance:RWX|Operations:R
-HR,C:\HR,Human Resources:RW,Human Resources:RWX|Executive Management:RWX
-Common,C:\Common,Everyone:RW,Domain Users:R|Staff:RWX
+ShareName,Path,SharePermissions,NtfsPermissions
+Finance,C:\Finance,FullAccess:Everyone,Executive Management:FC|Finance:FC|Operations:R|Domain Admins:FC
+HR,C:\HR,FullAccess:DEFENSE\Human Resources,Human Resources:FC|Executive Management:FC|Domain Admins:FC
+Common,C:\Common,FullAccess:Everyone,Domain Users:R|Staff:FC|Domain Admins:FC
