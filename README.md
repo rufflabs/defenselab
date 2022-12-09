@@ -14,8 +14,7 @@
 #### DC01
 - Re-IP to Virtualbox safe IP
 - Create a couple of file shares
-    - Add to New-DefenseNetADUsersAndGroups.ps1
-    - Create new CSV with file share info
+    - Create script to parse csv and create shares
 
 #### SOC01
 - Re-IP
@@ -23,7 +22,10 @@
 
 #### SQL01
 - Re-IP
-- Load sample database
+- Create new script to handle downloading SQL Server trial and extracting it to disk.
+- Follow up that script with the sql install
+- Script to add local sql user to local admin so it's not inline.
+- Load sample database, does SQL Server have sample/documentation databases?
 
 #### DEV01
 - Re-IP
@@ -35,15 +37,11 @@
 
 #### WEB01
 - Re-IP
-- Join Domain
-- Install bWAPP
-- Load configuration (db config, usernames, etc)
+- Join domain
 
 #### DB02
 - Re-IP
 - Join domain
-- Download/build/install MySQL so it can run as root
-- Configure mysql, load bwapp database
 
 #### ANALYST01
 - Re-IP
@@ -52,7 +50,7 @@
 #### KALI
 - Create, Kali 2022.04
 
-#### PENTEST
+#### ATTACKER
 - Create, Ubuntu 22.04 LTS
 - Install tools according to Art of book appendix
 
