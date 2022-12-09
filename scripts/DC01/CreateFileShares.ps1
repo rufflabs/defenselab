@@ -19,7 +19,7 @@ function Create-TestFiles {
     
     if(-not (Test-Path -Path $Path)) {
         Write-Output "Creating root folder $($Path)"
-        New-Item -Path $Path -ItemType Directory
+        New-Item -Path $Path -ItemType Directory | Out-Null
     }
     
     function Fill-Directory {
@@ -37,7 +37,7 @@ function Create-TestFiles {
             $FileName = $FileNames | Get-Random
             $FilePath = Join-Path -Path $Path -ChildPath $FileName
             if(-not (Test-Path -Path $FilePath)) {
-                New-Item -Path $FilePath -ItemType File -Value (New-Guid).Guid
+                New-Item -Path $FilePath -ItemType File -Value (New-Guid).Guid | Out-Null
             }
         }
     
@@ -48,7 +48,7 @@ function Create-TestFiles {
                 $FolderPath = Join-Path -Path $Path -ChildPath $FolderName
     
                 if(-not (Test-Path -Path $FolderPath)) {
-                    New-Item -Path $FolderPath -ItemType Directory 
+                    New-Item -Path $FolderPath -ItemType Directory | Out-Null
                     Fill-Directory -Path $FolderPath -CurrentDepth ($CurrentDepth + 1)
                 }
             }
@@ -73,7 +73,7 @@ if(-not (Test-Path -Path $ShareCsv)) {
 $Shares = ConvertFrom-Csv (Get-Content -Path $ShareCsv)
 
 $Shares.Path | ForEach-Object {
-    New-Item -Path $_ -ItemType Directory
+    New-Item -Path $_ -ItemType Directory | Out-Null
 }
 
 # Set NTFS Permissions
@@ -132,7 +132,7 @@ $Shares | ForEach-Object {
             $ShareParameters.NoAccess = $SharePermissions.NoAccess
         }
 
-        New-SmbShare @ShareParameters
+        New-SmbShare @ShareParameters | Out-Null
     }
 
 }
