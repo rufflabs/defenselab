@@ -29,11 +29,12 @@
 
 #### DEV01
 - Re-IP
-- Install Amazon Corretto from download
-- Set JAVA_HOME and add JAVA_HOME\bin to PATH
-- Install Jenkins with admin:password
-- Install Tomcat with admin:admin
+- Add JAVA_HOME\bin to PATH
+- Update Jenkins credentials admin:password
+- Unlock jenkins, or bypass setup/unlock process
+- Update Tomcat credentials admin:admin
 - Give domain user local admin
+- Allow remote access to Tomcat manager, check the three xml files in dev01. 
 
 #### WEB01
 - Re-IP

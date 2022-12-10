@@ -128,7 +128,7 @@ Vagrant.configure("2") do |config|
     box.vm.box = basebox_windows_core
     box.vm.hostname = "dev01"
 
-    box.vm.network :private_network, ip: private_network_ips["dev01"][:ip], subnet: private_network_ips["dev01"][:subnet], gateway: private_network_ips["dev01"][:gateway]
+    box.vm.network :private_network, ip: private_network_ips["dev01"][:ip ], subnet: private_network_ips["dev01"][:subnet], gateway: private_network_ips["dev01"][:gateway]
 
 
     box.vm.provider :virtualbox do |vb|
@@ -141,15 +141,11 @@ Vagrant.configure("2") do |config|
     box.vm.provision "shell", path: "scripts/windows/Install-DscRequirements.ps1", name: "Install DSC Requirements"
     box.vm.provision "shell", path: "scripts/windows/Set-DnsServer.ps1", name: "Set DNS Server"
     box.vm.provision "shell", path: "scripts/DSC/DSC_Join-Domain.ps1", name: "Join Domain"
-    box.vm.provision "shell", reboot: true
+    box.vm.provision "shell", reboot: true, name: "Rebooting after domain join"
     box.vm.provision "shell", path: "scripts/windows/Install-WazuhAgent.ps1", name: "Install Wazuh Agent"
-    #box.vm.provision "shell", path: "scripts/DEV01-AdditionalConfiguration.ps1", name: "Additional DEV01 Configuration"
-    # TODO: Create above script, move below installs and configs to that script.
-    box.vm.provision "shell", inline: "cmd.exe /c msiexec.exe /i c:\\vagrant\\programs\\amazon-corretto-17.0.5.8.1-windows-x64.msi /qn", name: "Install Amazon Corretto"
-    # TODO: Set JAVA_HOME and add JAVA_HOME\bin to PATH. 
-    # TODO: Install Jenkins 
-    # TODO: Install Tomcat
-    box.vm.provision "shell", inline: "Programs/xampp-windows-x64-7.4.33-0-VC15-installer.exe", args: "--mode unattended", name: "Install XAMPP"
+    box.vm.provision "shell", path: "scripts/dev01/InstallCorretto.ps1", name: "Install Amazon Corretto"
+    box.vm.provision "shell", path: "scripts/dev01/InstallJenkins.ps1", name: "Install Jenkins"
+    box.vm.provision "shell", path: "scripts/dev01/InstallTomcat.ps1", name: "Install Tomcat"
 
     # Install jenkins with admin:password
     # Install tomcat admin:admin via xampp

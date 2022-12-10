@@ -78,7 +78,7 @@ $Shares.Path | ForEach-Object {
 
 # Set NTFS Permissions
 $Shares | ForEach-Object {
-
+    Write-Output "Creating test files in $($_.Path)..."
     # Fill share with dummy files before we adjust permissions.
     Create-TestFiles -Path $_.Path -Depth (Get-Random -Minimum 2 -Maximum 5) `
         -FileNamesPath "C:\Vagrant\Scripts\DC01\filenames.txt" -FolderNamesPath "C:\Vagrant\Scripts\DC01\foldernames.txt" `
@@ -91,10 +91,12 @@ $Shares | ForEach-Object {
 
     # Add each rule from csv
     $_.NtfsPermissions | ForEach-Object {
+        Write-Output "Setting NTFS Permissions from CSV: $($_)..."
         $Groups = $_.Split('|')
 
         $Groups | ForEach-Object {
             $Group, $Permission = $_.Split(':')
+            Write-Output "Adding permissions $($Permission) for group $($Group)..."
             $Acl.AddAccessRule((New-Object System.Security.AccessControl.FileSystemAccessRule($Group, $PermissionsMap[$Permission], 'ObjectInherit, ContainerInherit', 'None', 'Allow')))
         }
 
