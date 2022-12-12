@@ -13,6 +13,12 @@ Set-Service -Name Tomcat10 -StartupType Automatic
 
 New-NetFirewallRule -Name "Tomcat" -DisplayName "Tomcat" -Direction Inbound -LocalPort 8080 -Protocol TCP -Action Allow -Profile Domain | Out-Null
 
-Copy-Item -Path "C:\Vagrant\Scripts\DEV01\tomcat-users.xml" -Destination "C:\Tomcat\conf\" -Force
+# Update context.xml to allow remote access of the manager endpoint
+$ContextXml = "C:\Tomcat\webapps\manager\META-INF\context.xml"
+Set-Content -Path $ContextXml -Value (Get-Content -Path $ContextXml).Replace('127\.\d+\.\d+\.\d+|::1|0:0:0:0:0:0:0:1', '127\.\d+\.\d+\.\d+|::1|0:0:0:0:0:0:0:1|172\.25\.30\.\d+') -Force
+
+# Add user
+$UsersXml = "C:\Tomcat\conf\tomcat-users.xml"
+Set-Content -Path $UsersXml -Value (Get-Content -Path $UsersXml).Replace('</tomcat-users>', '<user username="admin" password="admin" roles="manager-gui"/></tomcat-users>') -Force
 
 Start-Service -Name Tomcat10

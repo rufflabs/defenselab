@@ -60,7 +60,7 @@ function New-OrganizationalUnitFromDN
 
 # Location of the Users.csv file
 $UserList = "C:\Vagrant\Scripts\dc01\AD_Users.csv"
-$ComputerList = "C:\Vagrant\Scripts\dc1\AD_Computers.csv"
+$ComputerList = "C:\Vagrant\Scripts\dc01\AD_Computers.csv"
 
 if(-not (Test-Path -Path $UserList)) {
     Write-Host "Users CSV file not found!"

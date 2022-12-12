@@ -22,13 +22,15 @@ Configuration SQLInstall
         {
             InstanceName        = 'MSSQLSERVER'
             Features            = 'SQLENGINE'
-            SourcePath          = 'C:\Vagrant\Programs\SQL2016'
+            SourcePath          = 'C:\SQLServer2016' # Set to ISO file location
             SQLSysAdminAccounts = @('Administrators')
             DependsOn           = '[WindowsFeature]NetFramework45'
             SecurityMode        = 'SQL'
             SAPwd               = $Credential
         }
     }
+
+
 }
 
 $ConfigurationData = @{

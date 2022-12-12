@@ -17,3 +17,6 @@ $Version = (Get-ChildItem -Path "C:\Program Files\Amazon Corretto").Name
 
 $env:JAVA_HOME = "C:\Program Files\Amazon Corretto\$($Version)"
 [Environment]::SetEnvironmentVariable("JAVA_HOME", $env:JAVA_HOME, "Machine")
+
+# Add to path
+[Environment]::SetEnvironmentVariable("PATH", "$($env:PATH);$($env:JAVA_HOME)\bin", "Machine")

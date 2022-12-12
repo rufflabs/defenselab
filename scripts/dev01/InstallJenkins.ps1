@@ -19,4 +19,8 @@ Set-Content -Path "$($env:JENKINS_HOME)\jenkins.install.InstallUtil.lastExecVers
 New-NetFirewallRule -Name "Jenkins" -DisplayName "Jenkins" -Direction Inbound -LocalPort 9090 -Protocol TCP -Action Allow -Profile Domain | Out-Null
 
 Set-Service -Name Jenkins -StartupType Automatic
-Restart-Service -Name Jenkins
+Stop-Service -Name Jenkins
+
+Copy-Item -Path "C:\Vagrant\Scripts\dev01\.jenkins" -Destination "C:\Windows\system32\config\systemprofile\AppData\Local\Jenkins\" -Recurse -Force
+Start-Service -Name Jenkins
+# C:\Windows\system32\config\systemprofile\AppData\Local\Jenkins\.jenkins\secrets\initialAdminPassword

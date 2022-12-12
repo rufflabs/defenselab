@@ -5,6 +5,9 @@
     - Set-DnsServer.ps1
 - Update IP of Wazuh server
     - Install-WazuhAgent.ps1
+- Any IP Update
+    - Update web01\InstallTomcat.ps1 context file.
+    - Update windows\Install-WazuhAgent.ps1
 - Confirm DNS works, have CSV to import DNS?
 
 - New IP range: 192.168.62.x 
@@ -13,47 +16,45 @@
 
 #### DC01
 - Re-IP to Virtualbox safe IP
-- Create a couple of file shares
-    - Create script to parse csv and create shares
+- Potential issue with createfiles script?
+- Install PKI
 
 #### SOC01
 - Re-IP
 - Join to AD Domain
+- Add pre-configured user to Wazuh
+- Create second version that is based on Splunk or Elastic
 
 #### SQL01
 - Re-IP
-- Create new script to handle downloading SQL Server trial and extracting it to disk.
-- Follow up that script with the sql install
-- Script to add local sql user to local admin so it's not inline.
-- Load sample database, does SQL Server have sample/documentation databases?
+- Load sample database of some kind
 
 #### DEV01
 - Re-IP
-- Add JAVA_HOME\bin to PATH
-- Update Jenkins credentials admin:password
-- Unlock jenkins, or bypass setup/unlock process
-- Update Tomcat credentials admin:admin
-- Give domain user local admin
-- Allow remote access to Tomcat manager, check the three xml files in dev01. 
 
 #### WEB01
 - Re-IP
 - Join domain
+- Add domain account as local sudo user
+- Install Wazuh agent
 
 #### DB02
 - Re-IP
 - Join domain
+- Add domain account as local sudo user
+- Install wazuh agent
 
-#### ANALYST01
+#### ANALYST
 - Re-IP
-- Download and install SQL Server Management Studio fresh, or cache it.
+- Update `InstallSSMS.ps1` to download if needed.
+- Enable showing of GUI?
 
 #### KALI
 - Create, Kali 2022.04
 
 #### ATTACKER
-- Create, Ubuntu 22.04 LTS
-- Install tools according to Art of book appendix
+- Disable show of GUI?
+- Add back kali user?
 
 
 ## Lab Options

@@ -1,0 +1,4 @@
+#!/bin/bash
+
+# Extract the Wazuh passwords
+tar -O -xvf /home/vagrant/wazuh-install-files.tar wazuh-install-files/wazuh-passwords.txt > /vagrant/wazuh-passwords.txt
