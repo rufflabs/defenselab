@@ -1,116 +1,93 @@
-### Vagrant To Do
-#### Scripts
-- Update IP of DC01
-    - 60-defense-net-dns.yaml
-    - Set-DnsServer.ps1
-- Update IP of Wazuh server
-    - Install-WazuhAgent.ps1
-- Any IP Update
-    - Update web01\InstallTomcat.ps1 context file.
-    - Update windows\Install-WazuhAgent.ps1
-- Confirm DNS works, have CSV to import DNS?
+# Defense Network Lab
+The Defense Network Lab is a Vagrant project that will launch a VM lab network with a full Active Directory
+domain with multiple users, groups, and computer objects. It includes a Wazuh server for log management and
+alerting, and both an analyst VM for defensive actions and a Kali attack VM for offensive actions.
 
-- New IP range: 192.168.62.x 
-- Subnet: 255.255.248.0 | /21
-- Gateway: 192.168.56.1
+The Windows VM's and SQL Server 2016 are installed using Evaluation licenses. This allows you to destroy
+and rebuild the lab once the evaluation licenses expire.
 
-#### DC01
-- Re-IP to Virtualbox safe IP
+This lab is currently a work in progress, see the To Do section below for the current list of items I intend
+to update.
+
+## Setup and Usage
+You will need to have the following pre-requisites to build this lab:
+- Virtualbox (Tested on 7.0)
+- Vagrant (Tested on 2.3.3)
+- 110GB+ of free disk space
+    - 17GB for Vagrant boxes
+    - 85GB for built lab VM's
+    - 5GB for software downloads (SQL, etc)
+- 10GB+ of RAM (Tested on Windows 10 with 16GB)
+- Tested with 6 core CPU
+
+In my testing I had all 8 VM's operating at the same time, and the Analyst and Wazuh VM's were responsive. 
+If you have less resources available, or are experiencing performance issues you can choose to only bring up
+the specific VM's you need for a particular testing scenario. 
+
+For example, to test a `Responder` attack, you only need DC01, Analyst and Attack. 
+
+If disk space is a concern, you can choose to only bring up the specific VM's you want to test with and destroy
+them when finished. As a base you will probably at least always want DC01, Analyst, and potentially Attack available.
+
+## Bringing the lab online
+Once you have Virtualbox and Vagrant installed you can bring the entire lab up with all 8 VM's by opening a
+command prompt in the `defenselab` folder where the `Vagrantfile` and `scripts/` are. Then run:
+```
+vagrant up
+```
+
+If you only want to bring up specific VM's, always start with DC01, and then others. For example:
+```
+vagrant up dc01
+
+# Wait until dc01 boots
+vagrant up analyst
+
+# Wait until that one comes up
+vagrant up attack
+```
+
+The entire lab will take about 2 hours to be built and configured from scratch, not including download time for downloading the various Vagrant template boxes. 
+
+# To Do
+- Update IP's to Virtualbox's approved private IP's for Linux/Mac to minimize issues
+    - 192.168.56.0/21
+- Update support scripts with new IP's
+    - linux/60-defense-net-dns.yaml
+    - windows/Set-DnsServer.ps1
+    - windows/Install-WazuhAgent.ps1
+    - web01/InstallTomcat.ps1 context file update.
+- Create CSV to update defense.local DNS entries for linux servers
+- Add LAPS
+
+**DC01**
 - Potential issue with createfiles script?
 - Install PKI
 
-#### SOC01
-- Re-IP
+**SOC01**
 - Join to AD Domain
-- Add pre-configured user to Wazuh
-- Create second version that is based on Splunk or Elastic
+- Add pre-configured users to Wazuh, if possible
+- Move from Wazuh to Splunk or ELK?
 
-#### SQL01
-- Re-IP
+**SQL01**
 - Load sample database of some kind
 
-#### DEV01
-- Re-IP
+**DEV01**
 
-#### WEB01
-- Re-IP
+
+**WEB01**
 - Join domain
 - Add domain account as local sudo user
 - Install Wazuh agent
 
-#### DB02
-- Re-IP
+**DB02**
 - Join domain
 - Add domain account as local sudo user
 - Install wazuh agent
 
-#### ANALYST
-- Re-IP
-- Update `InstallSSMS.ps1` to download if needed.
-- Enable showing of GUI?
+**ANALYST**
+- Update `analyst/InstallSSMS.ps1` to download if needed.
 
-#### KALI
-- Create, Kali 2022.04
-
-#### ATTACKER
-- Disable show of GUI?
-- Add back kali user?
-
-
-## Lab Options
-Full config as above for going through The Art of Network Penetration Testing book.
-
-Mini-config consisting of:
-DC01: AD, DNS, PKI, File share
-SOC01: Wazuh, or Splunk/ELK
-SQL01/DB02: SQL Server or MySQL
-DEV01/WEB01: XAMPP with Tomcat/Jenkins or bWAPP or similar
-ANALYST: RSAT, SSMS
-KALI
-
-
-
-### Build Guide To Do
-- Plant default password `D3fense!` in document in file share for new users. Onboarding page?
-- Set `Domain User` to have permission to join PC's to the domain.
-- Configure file share on DC01, including allowing public write but not read.
-- Basic LAPS install without modifying permissions. (Weak implementation)
-- Create computers and server accounts in AD. 
-    - Some default machine account password vulns, allowing takeover.
-- Redo IP's to adhere to virtaulbox on mac/linux restrictions (192.168.x.x address range)
-- 
-
-# Defense Network Lab
-
-The Defense Network Lab is built around the internal network of a ficticious company. The Defense Network
-is an auditing and cybersecurity consulting firm. 
-
-As they expanded their business they had to grow their IT services and executive management. With some new
-business and potential clients they have had to start adhereing to various audit and security control requirements.
-
-One of those requirements is to have a penetration test performed to test the security controls of the Defense Network.
-
-Your role is to come in as a security contractor to audit the Defense Network and create a penetration test report. 
-
-## Lab Requirements
-The Defense Network lab is designed around using minimal resources, and uses VirtualBox and Vagrant to create a predictable
-lab environment. To deploy the lab you will need to have VirtualBox and Vagrant installed. 
-
-### VirtualBox
-
-### Vagrant
-
-## Lab Goals
-
-## Guided Scenarios
-
-## Resources
-
-## Step by Step Setup
-
-### VirtualBox
-
-### Vagrant
-
-### Deploying the Lab via Vagrant
-
+**ATTACK**
+- Create kali user
+- Configure DNS?
