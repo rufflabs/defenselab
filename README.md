@@ -1,5 +1,5 @@
-# Defense Network Lab
-The Defense Network Lab is a Vagrant project that will launch a VM lab network with a full Active Directory
+# Defense Lab
+The Defense Lab is a Vagrant project that will launch a VM lab network with a full Active Directory
 domain with multiple users, groups, and computer objects. It includes a Wazuh server for log management and
 alerting, and both an analyst VM for defensive actions and a Kali attack VM for offensive actions.
 
@@ -8,6 +8,11 @@ and rebuild the lab once the evaluation licenses expire.
 
 This lab is currently a work in progress, see the To Do section below for the current list of items I intend
 to update.
+
+**Note:** This lab works best with VirtualBox. I tried some Vagrant boxes that supported VMware Workstation or
+Hyper-V but they were not nearly as reliable and predictable as the Virtaulbox counterparts. 
+
+**I highly recommend using VIrtualBox for this lab.**
 
 ## Setup and Usage
 You will need to have the following pre-requisites to build this lab:

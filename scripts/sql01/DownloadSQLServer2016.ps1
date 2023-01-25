@@ -28,6 +28,12 @@ if((Test-Path -Path "$($CacheLocation)\$($IsoFilename)")) {
     )
     
     Start-Process $ExeFile -ArgumentList $ExeArguments -Wait
+
+    # Copy ISO to cache
+    if(-not (Test-Path -Path $CacheLocation)) {
+        New-Item -Path $CacheLocation -ItemType Directory -Force | Out-Null
+    }
+    Copy-Item -Path $IsoPath -Destination $CacheLocation
 }
 
 # Extract the ISO contents

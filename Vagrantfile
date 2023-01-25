@@ -1,56 +1,45 @@
-
 Vagrant.configure("2") do |config|
 
+  # Base Vagrant boxes
   basebox_windows_core = "gusztavvargadr/windows-server-core"
   basebox_windows_server = "gusztavvargadr/windows-server"
   basebox_ubuntu = "bento/ubuntu-22.04"
   basebox_windows_10 = "gusztavvargadr/windows-10"
   basebox_windows_11 = "gusztavvargadr/windows-11"
 
+  # Networking
+  private_network_subnet = "255.255.255.0"
+  private_network_gateway = "172.25.30.1"
   private_network_ips = {
     "dc01" => {
-      ip: "172.25.30.2",
-      subnet: "255.255.255.0",
-      gateway: "172.25.30.1"
+      ip: "172.25.30.2"
     },
     "soc01" => {
-      ip: "172.25.30.3",
-      subnet: "255.255.255.0",
-      gateway: "172.25.30.1"
+      ip: "172.25.30.3"
     },
     "sql01" => {
-      ip: "172.25.30.4",
-      subnet: "255.255.255.0",
-      gateway: "172.25.30.1"
+      ip: "172.25.30.4"
     },
     "dev01" => {
-      ip: "172.25.30.5",
-      subnet: "255.255.255.0",
-      gateway: "172.25.30.1"
+      ip: "172.25.30.5"
     },
     "web01" => {
-      ip: "172.25.30.6",
-      subnet: "255.255.255.0",
-      gateway: "172.25.30.1"
+      ip: "172.25.30.6"
     },
     "db02" => {
-      ip: "172.25.30.7",
-      subnet: "255.255.255.0",
-      gateway: "172.25.30.1"
+      ip: "172.25.30.7"
     },
     "analyst" => {
-      ip: "172.25.30.8",
-      subnet: "255.255.255.0",
-      gateway: "172.25.30.1"
+      ip: "172.25.30.8"
     },
     "attack" => {
-      ip: "172.25.30.9",
-      subnet: "255.255.255.0",
-      gateway: "172.25.30.1"
+      ip: "172.25.30.9"
     }
-  
   }
   
+  # Global options
+  config.vm.boot_timeout = 600
+  config.vm.synced_folder ".", "/vagrant", disabled: false
 
   config.vm.define "dc01" do |box|
     box.vm.box = basebox_windows_core
@@ -60,9 +49,9 @@ Vagrant.configure("2") do |config|
     box.winrm.transport = :plaintext
     box.winrm.basic_auth_only = true
 
-    box.vm.network :private_network, ip: private_network_ips["dc01"][:ip], subnet: private_network_ips["dc01"][:subnet], gateway: private_network_ips["dc01"][:gateway]
+    box.vm.network "private_network", ip: private_network_ips["dc01"][:ip], subnet: private_network_subnet, gateway: private_network_gateway
 
-    box.vm.provider :virtualbox do |vb|
+    box.vm.provider "virtualbox" do |vb|
       vb.name = "defense_dc01"
       vb.memory = 1024
       vb.cpus = 2
@@ -82,12 +71,10 @@ Vagrant.configure("2") do |config|
     box.vm.box = basebox_ubuntu
     box.vm.hostname = "soc01"
 
-    box.vm.network :private_network, ip: private_network_ips["soc01"][:ip], subnet: private_network_ips["soc01"][:subnet], gateway: private_network_ips["soc01"][:gateway]
+    box.vm.network "private_network", ip: private_network_ips["soc01"][:ip], subnet: private_network_subnet, gateway: private_network_gateway
 
-
-    box.vm.provider :virtualbox do |vb|
+    box.vm.provider "virtualbox" do |vb|
       vb.name = "defense_soc01"
-
       vb.memory = 1024
       vb.cpus = 2
     end
@@ -106,10 +93,9 @@ Vagrant.configure("2") do |config|
     box.winrm.transport = :plaintext
     box.winrm.basic_auth_only = true
 
-    box.vm.network :private_network, ip: private_network_ips["sql01"][:ip], subnet: private_network_ips["sql01"][:subnet], gateway: private_network_ips["sql01"][:gateway]
+    box.vm.network "private_network", ip: private_network_ips["sql01"][:ip], subnet: private_network_subnet, gateway: private_network_gateway
 
-
-    box.vm.provider :virtualbox do |vb|
+    box.vm.provider "virtualbox" do |vb|
       vb.name = "defense_sql01"
       vb.memory = 1024
       vb.cpus = 2
@@ -129,12 +115,11 @@ Vagrant.configure("2") do |config|
     box.vm.box = basebox_windows_core
     box.vm.hostname = "dev01"
 
-    box.vm.network :private_network, ip: private_network_ips["dev01"][:ip ], subnet: private_network_ips["dev01"][:subnet], gateway: private_network_ips["dev01"][:gateway]
-    box.vm.network "forwarded_port", guest: 9090, host: 9090
+    box.vm.network "private_network", ip: private_network_ips["dev01"][:ip ], subnet: private_network_subnet, gateway: private_network_gateway
+    box.vm.network "forwarded_port", guest: 9090, host: 9090 # For testing VM setup
 
-    box.vm.provider :virtualbox do |vb|
+    box.vm.provider "virtualbox" do |vb|
       vb.name = "defense_dev01"
-
       vb.memory = 1024
       vb.cpus = 2
     end
@@ -154,18 +139,16 @@ Vagrant.configure("2") do |config|
     box.vm.box = basebox_ubuntu
     box.vm.hostname = "web01"
 
-    box.vm.network :private_network, ip: private_network_ips["web01"][:ip], subnet: private_network_ips["web01"][:subnet], gateway: private_network_ips["web01"][:gateway]
+    box.vm.network "private_network", ip: private_network_ips["web01"][:ip], subnet: private_network_subnet, gateway: private_network_gateway
 
-
-    box.vm.provider :virtualbox do |vb|
+    box.vm.provider "virtualbox" do |vb|
       vb.name = "defense_web01"
-
       vb.memory = 1024
       vb.cpus = 2
     end
 
     box.vm.provision "shell", path: "scripts/linux/netplan.sh", name: "Apply netplan DNS configuration"
-    #box.vm.provision "shell", path: "scripts/join-domain.sh", name: "Join domain"
+    #box.vm.provision "shell", path: "scripts/join-domain.sh", name: "Join domain" # TODO: Get linux box joined to AD
     box.vm.provision "shell", path: "scripts/web01/apache-php.sh", name: "Install apache and php"
     box.vm.provision "shell", path: "scripts/web01/bwapp.sh", name: "Create bWAPP website"
   end
@@ -174,18 +157,16 @@ Vagrant.configure("2") do |config|
     box.vm.box = basebox_ubuntu
     box.vm.hostname = "db02"
 
-    box.vm.network :private_network, ip: private_network_ips["db02"][:ip], subnet: private_network_ips["db02"][:subnet], gateway: private_network_ips["db02"][:gateway]
+    box.vm.network "private_network", ip: private_network_ips["db02"][:ip], subnet: private_network_subnet, gateway: private_network_gateway
 
-
-    box.vm.provider :virtualbox do |vb|
+    box.vm.provider "virtualbox" do |vb|
       vb.name = "defense_db02"
-
       vb.memory = 1024
       vb.cpus = 2
     end
 
     box.vm.provision "shell", path: "scripts/linux/netplan.sh", name: "Apply netplan DNS configuration"
-    #box.vm.provision "shell", path: "scripts/join-domain.sh", name: "Join domain"
+    #box.vm.provision "shell", path: "scripts/join-domain.sh", name: "Join domain" # TODO: Get linux box joined to AD
     box.vm.provision "shell", path: "scripts/db02/mariadb.sh"
   end
 
@@ -193,10 +174,9 @@ Vagrant.configure("2") do |config|
     box.vm.box = basebox_windows_server
     box.vm.hostname = "analyst"
 
-    box.vm.network :private_network, ip: private_network_ips["analyst"][:ip], subnet: private_network_ips["analyst"][:subnet], gateway: private_network_ips["analyst"][:gateway]
+    box.vm.network "private_network", ip: private_network_ips["analyst"][:ip], subnet: private_network_subnet, gateway: private_network_gateway
 
-
-    box.vm.provider :virtualbox do |vb|
+    box.vm.provider "virtualbox" do |vb|
       vb.name = "defense_analyst"
       vb.gui = true
       vb.memory = 2048
@@ -213,15 +193,13 @@ Vagrant.configure("2") do |config|
     box.vm.provision "shell", reboot: true, name: "Reboot after software installs"
   end
 
-  # TODO: kali/pentest/audit box
-
   config.vm.define "attack" do |box|
     config.vm.box = "kalilinux/rolling"
     box.vm.hostname = "attack"
 
-    box.vm.network "private_network", ip: private_network_ips["attack"][:ip], subnet: private_network_ips["attack"][:subnet], gateway: private_network_ips["attack"][:gateway]
+    box.vm.network "private_network", ip: private_network_ips["attack"][:ip], subnet: private_network_subnet, gateway: private_network_gateway
 
-    box.vm.provider :virtualbox do |vb|
+    box.vm.provider "virtualbox" do |vb|
       vb.name = "defense_attack"
       vb.gui = true
       vb.memory = 2048
@@ -229,6 +207,5 @@ Vagrant.configure("2") do |config|
     end
 
     #box.vm.provision "shell", path: "scripts/linux/netplan.sh", name: "Apply netplan DNS configuration" # TODO: No netplan on kali
-    #box.vm.provision "shell", path: "scripts/attack/tools.sh", name: "Install tools"
   end
 end

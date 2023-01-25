@@ -6,4 +6,6 @@ Invoke-WebRequest "https://packages.wazuh.com/4.x/windows/wazuh-agent-4.3.10-1.m
 Write-Host "Installing Wazuh Agent..."
 & C:\wazuh-agent-4.3.10-1.msi /q WAZUH_MANAGER="172.25.30.3"
 
-Start-Service WazuhSvc
+If(Get-Service WazuhSvc -ErrorAction SilentlyContinue) {
+    Start-Service WazuhSvc
+}
