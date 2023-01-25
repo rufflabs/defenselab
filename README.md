@@ -6,13 +6,12 @@ alerting, and both an analyst VM for defensive actions and a Kali attack VM for 
 The Windows VM's and SQL Server 2016 are installed using Evaluation licenses. This allows you to destroy
 and rebuild the lab once the evaluation licenses expire.
 
-This lab is currently a work in progress, see the To Do section below for the current list of items I intend
-to update.
+This lab is currently a work in progress, see GitHub Issues to track current enhancement ideas and issues with the lab.
 
 **Note:** This lab works best with VirtualBox. I tried some Vagrant boxes that supported VMware Workstation or
 Hyper-V but they were not nearly as reliable and predictable as the Virtaulbox counterparts. 
 
-**I highly recommend using VIrtualBox for this lab.**
+**I highly recommend using VIrtualBox for this lab.** The supplied `Vagrantfile` is only configured for VirtualBox providers. 
 
 ## Setup and Usage
 You will need to have the following pre-requisites to build this lab:
@@ -53,46 +52,3 @@ vagrant up attack
 ```
 
 The entire lab will take about 2 hours to be built and configured from scratch, not including download time for downloading the various Vagrant template boxes. 
-
-# To Do
-- Update IP's to Virtualbox's approved private IP's for Linux/Mac to minimize issues
-    - 192.168.56.0/21
-- Update support scripts with new IP's
-    - linux/60-defense-net-dns.yaml
-    - windows/Set-DnsServer.ps1
-    - windows/Install-WazuhAgent.ps1
-    - web01/InstallTomcat.ps1 context file update.
-- Create CSV to update defense.local DNS entries for linux servers
-- Add LAPS
-
-**DC01**
-- Potential issue with createfiles script?
-- Install PKI
-
-**SOC01**
-- Join to AD Domain
-- Add pre-configured users to Wazuh, if possible
-- Move from Wazuh to Splunk or ELK?
-
-**SQL01**
-- Load sample database of some kind
-
-**DEV01**
-
-
-**WEB01**
-- Join domain
-- Add domain account as local sudo user
-- Install Wazuh agent
-
-**DB02**
-- Join domain
-- Add domain account as local sudo user
-- Install wazuh agent
-
-**ANALYST**
-- Update `analyst/InstallSSMS.ps1` to download if needed.
-
-**ATTACK**
-- Create kali user
-- Configure DNS?
